@@ -1,0 +1,8 @@
+package ${packagePath}.service;
+
+/**
+ * Created on ${createdTime}
+ */
+public interface ${modelName}Service {
+
+}

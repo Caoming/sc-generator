@@ -1,0 +1,3 @@
+function changePage(page) {
+    window.parent.changePage(page);
+}

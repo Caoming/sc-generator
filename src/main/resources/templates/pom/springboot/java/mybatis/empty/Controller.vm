@@ -1,0 +1,20 @@
+package ${packagePath}.web;
+
+import ${packagePath}.service.${modelName}Service;
+import ${packagePath}.model.${modelName};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * Created on ${createdTime}
+ */
+@RestController
+@RequestMapping(value = "/${varModelName}")
+public class ${modelName}Controller {
+
+	@Autowired
+	private ${modelName}Service ${varModelName}Service;
+
+}

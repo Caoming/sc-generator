@@ -1,0 +1,562 @@
+<!-- Content Wrapper. Contains page content -->
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            DataSource
+            <small>DataSource List</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> DataSource</a></li>
+            <li><a href="#">DataSource List</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <form>
+                                <div class="input-group input-group-sm" style="width: 40%;">
+
+                                    <input type="text" name="table_search" class="form-control pull-right"
+                                           ng-model="param" required>
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default ajax">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+
+                                        <button type="button" id="add" ng-click="addDBPop()"
+                                                class="btn btn-sm btn-primary">AddDB
+                                        </button>
+                                        <button type="button" onclick="executeSqlPop()"
+                                                class="btn btn-sm btn-primary">CreateTable
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table id="table1"
+                               class="table table-bordered  table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Url</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Driver</th>
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in data|filter: param">
+                                <td>{{item.id }}</td>
+                                <td>{{item.name }}</td>
+                                <td>
+                                    <a target="_blank" ng-if="item.driver =='com.mysql.jdbc.Driver'||item.driver =='org.mariadb.jdbc.Driver'" href="/generator/EN/{{item.id}}.sql">{{item.jdbcUrl }}</a>
+                                    <p ng-if="item.driver !='com.mysql.jdbc.Driver'&&item.driver !='org.mariadb.jdbc.Driver'">{{item.jdbcUrl }}</p>
+                                </td>
+                                <td>{{item.username }}</td>
+                                <td>{{item.password }}</td>
+                                <td>{{item.driver }}</td>
+                                <td>
+                                    <a href="javascript:void(0)">
+                                        <button class="btn btn-danger btn-sm  btn-flat"
+                                                ng-click="delDb(item.id)" type="button">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                        <button class="btn btn-info btn-sm  btn-flat"
+                                                ng-click='generatorModalPop(item.id)'>SpringBoot
+                                        </button>
+                                        <button class="btn btn-success btn-sm  btn-flat"
+                                                ng-click='generatorSpringCloudPop(item.id)'>SpringCloud
+                                        </button>
+                                        <button class="btn btn-primary btn-sm  btn-flat"
+                                                ng-click='generatorDubboPop(item.id)'>Dubbo
+                                        </button>
+                                        <button class="btn btn-warning btn-sm  btn-flat"
+                                                ng-click='generatorWebModalPop(item.id)'>Web
+                                        </button>
+                                        <button class="btn btn-default btn-sm  btn-flat"
+                                                ng-click='generatorUIModalPop(item.id)'>UI
+                                        </button>
+
+                                        <a ng-if="item.driver =='com.mysql.jdbc.Driver'||item.driver =='org.mariadb.jdbc.Driver'" href="/demo/{{item.id}}/index.html" target="_blank">
+                                            <button class="btn btn-default btn-sm  btn-flat">Browse
+                                            </button>
+                                        </a>
+
+                                        <a ng-if="item.driver =='com.mysql.jdbc.Driver'||item.driver =='org.mariadb.jdbc.Driver'" href="/generator/{{item.id}}/export" target="_blank">
+                                            <button class="btn btn-default btn-sm  btn-flat">Export
+                                            </button>
+                                        </a>
+                                        <a  href="/generator/EN/{{item.id}}.html" target="_blank">
+                                            <button class="btn btn-default btn-sm  btn-flat">Html
+                                            </button>
+                                        </a>
+                                        <a  href="/generator/EN/{{item.id}}.md" target="_blank">
+                                            <button class="btn btn-default btn-sm  btn-flat">Markdown
+                                            </button>
+                                        </a>
+                                        <a  href="/generator/EN/{{item.id}}.doc" target="_blank">
+                                            <button class="btn btn-default btn-sm  btn-flat">Word
+                                            </button>
+                                        </a>
+                                        <a  href="/jdl/index.html#/generator/EN/{{item.id}}.jdl" target="_blank">
+                                            <button class="btn btn-default btn-sm  btn-flat">Jdl
+                                            </button>
+                                        </a>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+<div class='modal' id='generatorSpringBootPop'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Generate SpringBoot Project</h4>
+            </div>
+            <div class='modal-body'>
+                <form action="/generator/springboot" method="get" role='form'>
+                    <input id="genSpringBootId" type="hidden" name="id">
+
+                    <div class="form-group">
+                        <label>Language:</label>
+                        <select class="form-control" style="width: 100%;" name="language">
+                            <option value="java" selected>Java</option>
+                            <option value="kotlin">Kotlin</option>
+                            <option value="groovy">Groovy</option>
+                            <option value="scala">Scala</option>
+                        </select>
+                    </div>
+
+                    <div class='form-group'>
+                        <label for='project'>Artifact:</label>
+                        <input type='text' class='form-control' name="project" placeholder="demo">
+                    </div>
+                    <div class='form-group'>
+                        <label>Package Name:</label>
+                        <input type='text' class='form-control' name="packagePath" placeholder="com.example">
+                    </div>
+                    <div class='form-group'>
+                        <label>Tables:</label>
+                        <select class="form-control select2" multiple="multiple" name="tbls" style="width: 100%;">
+                        </select>
+                    </div>
+
+                    <div class='form-group'>
+                        <label>Common Base</label>
+                        <input type='text' class='form-control' name="commonPackagePath" placeholder='com.example.common'>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Database Operation Layer:</label>
+                        <select class="form-control" style="width: 100%;" name="type">
+                            <option value="jpa">Jpa</option>
+                            <option value="mybatis" selected>Mybatis</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Maven Multi Project:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="mutilProject" value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mutilProject" checked="checked" value="false">No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Swagger:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" checked="checked"  value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" value="false">No
+                            </label>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='modal' id='generatorSpringCloudPop'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Generate SpringCloud Project</h4>
+            </div>
+            <div class='modal-body'>
+                <form action="/generator/springcloud" method="get" role='form'>
+                    <input id="genSpringCloudId" type="hidden" name="id">
+                    <div class='form-group'>
+                        <label for='project'>Artifact:</label>
+                        <input type='text' class='form-control' name="project" placeholder='demo'>
+                    </div>
+                    <div class='form-group'>
+                        <label>Package Name:</label>
+                        <input type='text' class='form-control' name="packagePath" placeholder='com.example'>
+                    </div>
+                    <div class='form-group'>
+                        <label>Tables:</label>
+                        <select class="form-control select2" multiple="multiple" name="tbls" style="width: 100%;">
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label>Common Base:</label>
+                        <input type='text' class='form-control' name="commonPackagePath" placeholder='com.example.common'>
+                    </div>
+                    <div class="form-group">
+                        <label>Maven Multi Project:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="mutilProject" value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mutilProject" checked="checked" value="false">No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Swagger:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" checked="checked"  value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" value="false">No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class='modal' id='generatorDubboPop'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Generate Dubbo Project</h4>
+            </div>
+            <div class='modal-body'>
+                <form action="/generator/dubbo" method="get" role='form'>
+                    <input id="genDubboId" type="hidden" name="id">
+                    <div class='form-group'>
+                        <label for='project'>Artifact</label>
+                        <input type='text' class='form-control' name="project" placeholder="demo">
+                    </div>
+                    <div class='form-group'>
+                        <label>Package Name:</label>
+                        <input type='text' class='form-control' name="packagePath" placeholder="com.example">
+                    </div>
+                    <div class='form-group'>
+                        <label>Tables:</label>
+                        <select class="form-control select2" multiple="multiple" name="tbls" style="width: 100%;">
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label>Common Base:</label>
+                        <input type='text' class='form-control' name="commonPackagePath" placeholder="com.example.common">
+                    </div>
+                    <div class="form-group">
+                        <label>Maven Multi Project: </label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="mutilProject" value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="mutilProject" checked="checked" value="false">No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Container:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="container" checked="checked" value="springboot">SpringBoot
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="container" value="dubbo">Dubbo
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Swagger:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger"  checked="checked" value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" value="false">No
+                            </label>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class='modal' id='generatorWebModalPop'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Generate Web Project</h4>
+            </div>
+            <div class='modal-body'>
+                <form action="/generator/web" method="get" role='form'>
+                    <input id="genWebId" type="hidden" name="id">
+                    <div class='form-group'>
+                        <label for='project'>Artifact:</label> <input type='text'
+                                                                  class='form-control' name="project" id='project'
+                                                                  placeholder='demo'>
+                    </div>
+                    <div class='form-group'>
+                        <label>Package Name:</label> <input type='text'
+                                                   class='form-control' name="packagePath"
+                                                   placeholder='com.example'>
+                    </div>
+                    <div class='form-group'>
+                        <label>Tables:</label>
+                        <select class="form-control select2" multiple="multiple" name="tbls" style="width: 100%;">
+                        </select>
+                    </div>
+
+                    <div class='form-group'>
+                        <label>Common Base:</label>
+                        <input type='text' class='form-control' name="commonPackagePath" placeholder='com.example.common'>
+                    </div>
+                    <div class="form-group">
+                        <label>Swagger:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger"  checked="checked" value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" value="false">No
+                            </label>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='modal' id='generatorUIModalPop'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Generator UI Project</h4>
+            </div>
+            <div class='modal-body'>
+                <form action="/generator/ui" method="get" role='form'>
+                    <input id="genUIId" type="hidden" name="id">
+
+                    <div class='form-group'>
+                        <label for='project'>Artifact:</label>
+                        <input type='text' class='form-control' name="project" placeholder="demo">
+                    </div>
+                    <div class='form-group'>
+                        <label>Package Name:</label>
+                        <input type='text' class='form-control' name="packagePath" placeholder="com.example">
+                    </div>
+                    <div class='form-group'>
+                        <label>Tables:</label>
+                        <select class="form-control select2" multiple="multiple" name="tbls" style="width: 100%;">
+                        </select>
+                    </div>
+
+                    <div class='form-group'>
+                        <label>Common Base:</label>
+                        <input type='text' class='form-control' name="commonPackagePath" placeholder='com.example.common'>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Template:</label>
+                        <select class="form-control" style="width: 100%;" name="language">
+                            <option value="angular1" selected>Angular 1</option>
+                            <option value="html">Html</option>
+                            <option value="thymeleaf" >Thymeleaf</option>
+                            <!--<option value="angular4" >Angular 4</option>-->
+                            <!--<option value="vue2" >Vue 2</option>-->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Swagger:</label>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" checked="checked"  value="true">Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="swagger" value="false">No
+                            </label>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class='modal' id='editDBModal'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Add Datasource</h4>
+            </div>
+            <div class='modal-body'>
+                <form ng-submit="addDB()" method="post">
+                    <div class='form-group'>
+                        <label>Name:</label>
+                        <input type="text" class='form-control' placeholder="test" ng-model="db.name">
+                    </div>
+                    <div class='form-group'>
+                        <label>Url:</label>
+                        <input type='url' class='form-control' placeholder='jdbc:mysql://localhost/mysql'
+                               ng-model="db.jdbcUrl">
+                    </div>
+                    <div class='form-group'>
+                        <label>Username:</label>
+                        <input type='text' class='form-control' ng-model="db.username">
+                    </div>
+                    <div class='form-group'>
+                        <label>Password:</label>
+                        <input type='password' class='form-control' ng-model="db.password" placeholder='password'>
+                    </div>
+                    <div class='form-group'>
+                        <label>DriverClass:</label>
+
+                        <input type='text' class='form-control' ng-model="db.driver"
+                               placeholder='com.mysql.jdbc.Driver'>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Save</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper. Contains page content -->
+<div class='modal' id='executeSqlPop'>
+    <div class='modal-dialog'>
+        <form action="/generator/executeSql" method="post" enctype="multipart/form-data">
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal'>
+                        <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                    </button>
+                    <h4 class='modal-title'>Execute Sql</h4>
+                </div>
+                <div class='modal-body'>
+                    <div class="form-group">
+                        <input type="file" name="file"/>
+                    </div>
+                </div>
+                <div class='modal-footer'>
+                    <button type='button' class='btn btn-default'
+                            data-dismiss='modal'>Close
+                    </button>
+                    <button type="submit" class='btn btn-primary'>Execute</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style type="text/css">
+    .select2-container--default .select2-selection--multiple .select2-selection__choice{
+        background-color: #3c8dbc;
+        border-color: #367fa9;
+        padding: 1px 10px;
+        color: #fff;
+    }
+</style>

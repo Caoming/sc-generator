@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+echo "[Unit]"> "/usr/lib/systemd/system/${project}.service"
+echo "Description=${project}">> "/usr/lib/systemd/system/${project}.service"
+echo "After=syslog.target network.target remote-fs.target nss-lookup.target">> "/usr/lib/systemd/system/${project}.service"
+echo "[Service]">> "/usr/lib/systemd/system/${project}.service"
+echo "Type=forking">> "/usr/lib/systemd/system/${project}.service"
+echo "PIDFile=`pwd`/${project}.service">> "/usr/lib/systemd/system/${project}.service"
+echo "ExecStart=cd `pwd`&&/bin/sh `pwd`/startup.sh">> "/usr/lib/systemd/system/${project}.service"
+echo "ExecReload=cd `pwd`&&/bin/sh `pwd`/shutdown.sh&&/bin/sh`pwd`/startup.sh">> "/usr/lib/systemd/system/${project}.service"
+echo "ExecStop=cd `pwd`&&/bin/sh `pwd`/shutdown.sh">> "/usr/lib/systemd/system/${project}.service"
+echo "PrivateTmp=true">> "/usr/lib/systemd/system/${project}.service"
+echo "[Install]">> "/usr/lib/systemd/system/${project}.service"
+echo "WantedBy=multi-user.target">> "/usr/lib/systemd/system/${project}.service"

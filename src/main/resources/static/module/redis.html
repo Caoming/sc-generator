@@ -1,0 +1,165 @@
+<!-- Content Wrapper. Contains page content -->
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Redis
+            <small>Redis List</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Redis</a></li>
+            <li><a href="#">Redis List</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <form>
+                                <div class="input-group input-group-sm" style="width: 35%;">
+
+                                    <input type="text" name="table_search" class="form-control pull-right"
+                                           ng-model="param" required>
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default ajax">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+
+                                        <button type="button" id="add" ng-click="addDBPop()"
+                                                class="btn btn-sm btn-primary">AddDB
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table id="table1"
+                               class="table table-bordered  table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Url</th>
+                                <th>Auth</th>
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in data|filter: param">
+                                <td>{{item.id }}</td>
+                                <td>{{item.name }}</td>
+                                <td>{{item.url }}</td>
+                                <td>{{item.auth }}</td>
+                                <td>
+                                    <a href="javascript:void(0)">
+                                        <button class="btn btn-danger btn-sm  btn-flat"
+                                                ng-click="delDb(item.id)" type="button">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                        <a href="/redisDataSource/{{item.id}}/export" target="_blank">
+                                            <button class="btn btn-info btn-sm  btn-flat ">
+                                                <li class="fa fa-download"></li>
+                                            </button>
+                                        </a>
+                                        <button class="btn btn-warning btn-sm  btn-flat" ng-click="redisPop(item.id)">
+                                            <i class="fa fa-terminal"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+<div class='modal' id='editDBModal'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>
+                    <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                </button>
+                <h4 class='modal-title'>Add Redis</h4>
+            </div>
+            <div class='modal-body'>
+                <form ng-submit="addDB()" method="post">
+                    <div class='form-group'>
+                        <label>Name:</label>
+                        <input type="text" class='form-control' placeholder="test" ng-model="db.name">
+                    </div>
+                    <div class='form-group'>
+                        <label>Url:</label>
+                        <input type='text' class='form-control' placeholder="localhost:6379" ng-model="db.url">
+                    </div>
+                    <div class='form-group'>
+                        <label>Password:</label>
+                        <input type='text' class='form-control' ng-model="db.auth">
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default'
+                                data-dismiss='modal'>Close
+                        </button>
+                        <button type="submit" class='btn btn-primary'>Save</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class='modal' id='redisPop'>
+    <div class='modal-dialog modal-lg'>
+        <div class='modal-content'>
+            <!-- DIRECT CHAT -->
+            <div class="box box-danger direct-chat direct-chat-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Console</h3>
+
+                    <div class="box-tools pull-right">
+                        <span data-toggle="tooltip" title="3 New Messages" class="badge bg-red" id="total">0</span>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="ClearPing"
+                                ng-click="clearPing()">
+                            <i class="fa fa-comments"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-dismiss="data-dismiss"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages" id="message">
+
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <form ng-submit="sendCommand(command)">
+                        <div class="input-group">
+                            <input type="text" name="message" placeholder="Command ..." required class="form-control" ng-model="command">
+                            <span class="input-group-btn">
+                        <button type="submit" class="btn btn-danger btn-flat">Send</button>
+                      </span>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+    </div>
+</div>

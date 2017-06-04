@@ -1,0 +1,96 @@
+version: "2"
+
+services:
+
+#if($driverClass=='org.postgresql.Driver')
+  ${project}-postgres:
+      image: postgres:latest
+      container_name: ${project}-postgres
+
+      # volumes:
+      #     - ~/data/postgresql/data:/var/lib/postgresql/data
+      environment:
+          - POSTGRES_USER=${username}
+          - POSTGRES_PASSWORD=${password}
+          - POSTGRES_DB=${project.replace("-","_")}
+      ports:
+          - 5432:5432
+#else
+  ${project}-mysql:
+      image: mysql:5.7.13
+      container_name: ${project}-mysql
+
+      # volumes:
+      #     - ~/data/mysql/:/var/lib/mysql/
+      environment:
+          - MYSQL_DATABASE=${database.replace("-","_")}
+          - MYSQL_ROOT_PASSWORD=${password}
+#         - MYSQL_USER=${username}
+#         - MYSQL_PASSWORD=${password}
+#         - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      ports:
+          - ${port}:3306
+      command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8
+#end
+
+  ${project}-redis:
+      image: redis:latest
+      command: redis-server --requirepass ${password}
+      container_name: redis
+      ports:
+          - 6379:6379
+  #    volumes:
+  #      - /data:/data
+
+  ${project}:
+    image: ${project}:0.0.1-SNAPSHOT
+    container_name: ${project}
+    ports:
+      - 8080:8080
+    links:
+      - ${project}-mysql:db
+      - ${project}-redis:redis
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+
+
+#      - JAVA_OPTS = "-server -Xms1024M -Xmx1024M -Xss512k -XX:PermSize=256M"
+#    restart: always
+#    mem_limit: 1024M
+#    volumes:
+#      - /tmp:/tmp
+#    extra_hosts:
+#     - "somehost:162.242.195.82"
+#     - "otherhost:50.31.209.229"
+
+#    external_links:
+#     - registry:registry
+#    dns:
+#      - 8.8.8.8
+#      - 9.9.9.9
+#    net: "bridge"
+#   stdin_open: true
+
+#  ${project}-es:
+#      image: elasticsearch:2.4.1
+#      # volumes:
+#      #     - ~/volumes/elasticsearch/:/usr/share/elasticsearch/data/
+#      ports:
+#          - 9200:9200
+#          - 9300:9300
+
+
+#  zookeeper:
+#      image: wurstmeister/zookeeper:3.4.6
+#      ports:
+#        - 2181:2181
+#  kafka:
+#      image: wurstmeister/kafka:0.10.1.1
+#      environment:
+#          KAFKA_ADVERTISED_HOST_NAME: localhost
+#          KAFKA_ADVERTISED_PORT: 9092
+#          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#          KAFKA_CREATE_TOPICS: "topic-jhipster:1:1"
+#      ports:
+#          - 9092:9092

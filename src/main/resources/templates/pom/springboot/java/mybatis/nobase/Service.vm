@@ -1,0 +1,46 @@
+package ${packagePath}.service;
+
+import java.util.List;
+
+import ${packagePath}.model.${modelName};
+import ${packagePath}.model.query.${modelName}Example;
+import ${packagePath}.service.${modelName}Service;
+
+/**
+ * Created on ${createdTime}
+ */
+public interface ${modelName}Service {
+
+#if ($primaryKey!=''&&$primaryType!='Object')
+
+    ${modelName} selectByPrimaryKey(${primaryType} id);
+#end
+
+    List<${modelName}> selectByExample(${modelName}Example q);
+
+
+    Object insert(${modelName} t);
+
+	Object insertSelective(${modelName} t);
+
+#if ($primaryKey!=''&&$primaryType!='Object')
+
+    Object updateByPrimaryKey(${modelName} t);
+
+	Object updateByPrimaryKeySelective(${modelName} t);
+#end
+
+	Object updateByExample(${modelName} t, ${modelName}Example q);
+
+	Object updateByExampleSelective(${modelName} t, ${modelName}Example q);
+
+	long countByExample(${modelName}Example q);
+#if ($primaryKey!=''&&$primaryType!='Object')
+
+
+    int deleteByPrimaryKey(${primaryType} id);
+#end
+
+	int deleteByExample(${modelName}Example q);
+
+}

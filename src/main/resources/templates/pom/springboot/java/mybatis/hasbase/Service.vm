@@ -1,0 +1,12 @@
+package ${packagePath}.service;
+
+import ${commonPath}.BaseService;
+import ${packagePath}.model.${modelName};
+import ${packagePath}.model.query.${modelName}Example;
+
+/**
+ * Created on ${createdTime}
+ */
+public interface ${modelName}Service extends BaseService<${modelName}, ${modelName}Example, ${primaryType}> {
+
+}

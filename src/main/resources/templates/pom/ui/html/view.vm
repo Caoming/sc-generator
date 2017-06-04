@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Data Tables</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/webjars/adminlte/2.3.6/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/4.6.3/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/webjars/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/webjars/adminlte/2.3.6/plugins/datatables/dataTables.bootstrap.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/webjars/adminlte/2.3.6/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/webjars/adminlte/2.3.6/dist/css/skins/_all-skins.min.css">
+
+</head>
+<body>
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Comment
+            <small>Comment List</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> ${modelName}</a></li>
+            <li><a href="#">${modelName} List</a></li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <form onsubmit="list($('#param').val())">
+                                <div class="input-group input-group-sm" style="width: 35%;">
+                                    <input type="text" name="param" class="form-control pull-right"
+                                           required="required" id="param"/>
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default ajax">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        <button type="button" onclick="add()" class="btn btn-sm btn-primary">Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered  table-striped table-hover" id="example2">
+                            <thead>
+                            <tr>
+                                #foreach($item in $filedNames)
+                                    <th>${item}</th>
+                                #end
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                #foreach($field in $varFiledNames)
+                                    <td>${field}</td>
+                                #end
+                                <th>operation</th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+
+    <div class='modal' id='${varModelName}Pop'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal'>
+                        <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                    </button>
+                    <h4 class='modal-title'>${modelName}</h4>
+                </div>
+                <div class='modal-body'>
+                    <form method="post">
+                        #foreach($item in $filedNames)
+                            #set($index = $velocityCount - 1 )
+                            #if($!{varFiledNames.get($index)}==$primaryKey)
+                                <input type="hidden" class='form-control' name="$!{varFiledNames.get($index)}"
+                                       id="$!{varFiledNames.get($index)}"
+                                       ng-model="data.$!{varFiledNames.get($index)}"/>
+                            #else
+                            <div class='form-group'>
+                                <label>$item:</label>
+                                <input type="text" class='form-control' name="$!{varFiledNames.get($index)}"
+                                       id="$!{varFiledNames.get($index)}"/>
+                            </div>
+                            #end
+                        #end
+                        <div class='modal-footer'>
+                            <button type='button' class='btn btn-default' data-dismiss='modal'>Close
+                            </button>
+                            <button type="submit" class='btn btn-primary'>Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="delId"/>
+                    <p>Delete this data?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteByPrimaryKey($('#delId').val())">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
+
+<!-- /.content -->
+</body>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="/webjars/adminlte/2.3.6/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="/webjars/adminlte/2.3.6/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/webjars/adminlte/2.3.6/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/webjars/adminlte/2.3.6/plugins/datatables/dataTables.bootstrap.js"></script>
+
+<script>
+    $(function () {
+        list();
+    });
+
+    var edit = function (id) {
+        modalPop();
+    }
+
+    var add = function () {
+        modalPop();
+    }
+
+
+    var deleteByPrimaryKey = function (id) {
+        $.ajax({
+            type: "delete",
+            url: "/${varModelName}/".concat(id),
+            success: function (data, status) {
+                list();
+                $('#confirmModal').modal('hide')
+            }
+        });
+    }
+
+    var confirmModal = function (id) {
+        var id = $("#delId").val(id);
+        $('#confirmModal').modal('toggle')
+
+    }
+
+    var modalPop = function () {
+        var modal = '${varModelName}Pop';
+        $('#' + modal).modal('toggle')
+    };
+
+
+    var dataTable;
+    var list = function (id) {
+        if (dataTable) {
+            dataTable.destroy();
+        }
+        dataTable = $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "info": true,
+            "bPaginate": true,
+            "bStateSave": true,
+            "autoWidth": false,
+            "serverSide": true,
+            "fnServerData": function (sSource, aoData, fnCallback) {
+
+                $.ajax({
+                    'type': 'get',
+                    "url": "/${varModelName}/list",
+                    "dataType": "json",
+                    "data": {pageNum: aoData[0].value},
+                    "success": function (resp) {
+                        var result = {
+                            iTotalRecords: resp.total,
+                            iTotalDisplayRecords: resp.total,
+                            iDisplayLength: resp.pageSize,
+                            aaData: resp.list,
+                            sEcho: resp.pageNum
+                        };
+                        fnCallback(result);
+                    }
+                })
+            },
+            "aoColumns": [
+                #set($concat="+")
+                #foreach($item in $varFiledNames)
+                    {'mData': '${item}'},
+                #end
+                {
+                    "mData": function (data, type, full) {
+                        return '<a href="javascript:void(0)"> ' $concat
+                        '<button class="btn btn-danger btn-sm  btn-flat" type="button" onclick="confirmModal(' $concat
+                        data.id $concat
+                        '' $concat
+                        ')">' $concat
+                        ' <i class="fa fa-trash-o"></i> ' $concat
+                        '</button> ' $concat
+                        '<button class="btn btn-info btn-sm  btn-flat" type="button" onclick="edit(' $concat
+                        data.id $concat
+                        '' $concat
+                        ')"> ' $concat
+                        '<i class="fa  fa-edit"></i> ' $concat
+                        '</button> ' $concat
+                        '</a>'
+                    }
+                }
+            ]
+        });
+    }
+
+</script>
+</body>
+</html>

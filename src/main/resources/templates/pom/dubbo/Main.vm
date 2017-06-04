@@ -1,0 +1,22 @@
+package ${packagePath};
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import com.alibaba.dubbo.common.utils.ConfigUtils;
+
+public class ${application} {
+
+	public static void main(String[] args) throws IOException {
+		//pid 方便 用kill关闭
+		String name = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+		FileWriter writer=new FileWriter(new File("${application}.pid"));
+		writer.write(name);
+		writer.close();
+		
+		ConfigUtils.getProperties().put("dubbo.spring.config", "classpath:config/*.xml");
+		com.alibaba.dubbo.container.Main.main(new String[] { "spring" });
+		
+	}
+}

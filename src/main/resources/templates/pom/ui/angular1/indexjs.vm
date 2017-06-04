@@ -1,0 +1,18 @@
+var app = angular.module("app", ['ngRoute'])
+
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    $routeProvider
+        #foreach($item in $tables)
+        .when('/${item}.html', {
+            #set($index = $velocityCount - 1 )
+            controller: '$!{modelNames.get($index)}Controller',
+            templateUrl: '/${item}.html'
+        })
+        #end
+
+        .otherwise('/$!{tables.get(0)}.html', {
+            controller: '$!{modelNames.get(0)}Controller',
+            templateUrl: '/$!{tables.get(0)}.html'
+        })
+}]);
+

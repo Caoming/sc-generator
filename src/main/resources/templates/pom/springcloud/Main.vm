@@ -1,0 +1,44 @@
+package ${packagePath};
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+
+@EnableAutoConfiguration
+@ComponentScan("${packagePath}")
+@MapperScan("${packagePath}.dao")
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
+@EnableFeignClients
+@EnableDiscoveryClient
+@EnableHystrix
+//@EnableRetry
+//@EnableOAuth2Client
+//@RibbonClients
+//@EnableScheduling
+@EnableSwagger2//see http://localhost:8080/swagger-ui.html
+public class ${application} {
+
+    public static void main(String[] args) throws IOException {
+        //pid
+        String name = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+        FileWriter writer = new FileWriter(new File("${application}.pid"));
+        writer.write(name);
+        writer.close();
+        SpringApplication.run(${application}.class, args);
+    }
+
+}

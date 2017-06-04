@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+
+spring:
+  application:
+    name: ${project}
+
+  aop: 
+    auto: true
+    proxy-target-class: true
+
+  datasource:
+    name: masterDataSource
+    url: ${url}
+    username: ${username}
+    password: ${password}
+    driver-class-name: ${driverClass}
+    tomcat:
+      maxActive: 200
+      initialSize: 5
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnReturn: false
+      testOnBorrow: false
+#    schema: classpath:/db/migration/V1__${project}.sql
+
+mybatis:
+  mapper-locations:
+    - classpath:${packagePath}/dao/*.xml
+  type-aliases-package: ${packagePath}.model
+
+logging:
+  level:
+    root: info
+    ${packagePath}.dao: debug
+  file: ${spring.application.name}.log
+
+management:
+  security:
+    enabled: false

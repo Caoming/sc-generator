@@ -1,0 +1,25 @@
+package ${packagePath}.service.impl;
+
+import ${commonPath}.BaseServiceImpl;
+import ${packagePath}.dao.${modelName}Dao;
+import ${packagePath}.model.${modelName};
+import ${packagePath}.model.query.${modelName}Example;
+import ${packagePath}.service.${modelName}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created on ${createdTime}
+ */
+@Service
+public class ${modelName}ServiceImpl extends BaseServiceImpl<${modelName}, ${modelName}Example, ${primaryType}> implements ${modelName}Service {
+
+    @Autowired
+    private ${modelName}Dao ${varModelName}Dao;
+
+    @Override
+    public void setDao() {
+        this.baseDao = ${varModelName}Dao;
+    }
+
+}

@@ -1,0 +1,83 @@
+server:
+  port: 8080
+
+
+spring:
+  application:
+    name: ${project}
+
+  aop: 
+    auto: true
+    proxy-target-class: true
+
+  datasource:
+    name: masterDataSource
+    url: ${url}
+    username: ${username}
+    password: ${password}
+    driver-class-name: ${driverClass}
+    tomcat:
+      maxActive: 200
+      initialSize: 5
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnReturn: false
+      testOnBorrow: false
+#    schema: classpath:/db/migration/V1__${project}.sql
+
+#  boot:
+#    admin:
+#      url: http://localhost:10005
+#  zipkin:
+#    base-url: http://localhost:9411/
+
+mybatis:
+  mapper-locations:
+    - classpath:${packagePath}/dao/*.xml
+  type-aliases-package: ${packagePath}.model
+
+logging:
+  level:
+    root: info
+    ${packagePath}.dao: debug
+    org.springframework.security: debug
+    org.springframework.web: debug
+eureka:
+  instance:
+    leasereIntervalInSeconds: 10
+    prefer-ip-address: true
+  client:
+    registry-fetch-interval-seconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+#  MaxAutoRetries: 1
+#  MaxAutoRetriesNextServer: 10
+
+#security:
+#  oauth2:
+#    resource:
+#      user-info-uri: http://localhost:9999/me
+#    client:
+#      access-token-uri: http://localhost:9999/oauth/token
+#      user-authorization-uri: http://localhost:9999/oauth/authorize
+#      client-id: acme
+#      client-secret: acmesecret
+management:
+#  context-path: /mgmt
+  security:
+    enabled: false

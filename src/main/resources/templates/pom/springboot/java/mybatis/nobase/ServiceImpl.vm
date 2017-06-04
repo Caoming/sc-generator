@@ -1,0 +1,90 @@
+package ${packagePath}.service.impl;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ${packagePath}.dao.${modelName}Dao;
+import ${packagePath}.model.${modelName};
+import ${packagePath}.model.query.${modelName}Example;
+import ${packagePath}.service.${modelName}Service;
+
+
+/**
+ * Created on ${createdTime}
+ */
+@Service
+public class ${modelName}ServiceImpl implements ${modelName}Service {
+
+    @Autowired
+	private ${modelName}Dao ${varModelName}Dao;
+
+#if ($primaryKey!=''&&$primaryType!='Object')
+    @Transactional(readOnly = true)
+    public ${modelName} selectByPrimaryKey(${primaryType} id) {
+        return ${varModelName}Dao.selectByPrimaryKey(id);
+    }
+#end
+
+	@Transactional(readOnly = true)
+	public List<${modelName}> selectByExample(${modelName}Example q) {
+		return ${varModelName}Dao.selectByExample(q);
+	}
+
+	@Transactional
+	public Object insert(${modelName} t) {
+		return ${varModelName}Dao.insert(t);
+	}
+
+	@Transactional
+	public Object insertSelective(${modelName} t) {
+		return ${varModelName}Dao.insertSelective(t);
+	}
+#if ($primaryKey!=''&&$primaryType!='Object')
+
+	@Transactional
+	public Object updateByPrimaryKeySelective(${modelName} t) {
+		return ${varModelName}Dao.updateByPrimaryKeySelective(t);
+	}
+#end
+
+	@Transactional
+	public Object updateByExampleSelective(${modelName} t, ${modelName}Example q) {
+		return ${varModelName}Dao.updateByExampleSelective(t, q);
+	}
+
+	@Transactional
+	public Object updateByExample(${modelName} t, ${modelName}Example q) {
+		return ${varModelName}Dao.updateByExample(t, q);
+	}
+
+#if ($primaryKey!=''&&$primaryType!='Object')
+    @Transactional
+    public Object updateByPrimaryKey(${modelName} t) {
+        return ${varModelName}Dao.updateByPrimaryKey(t);
+    }
+#end
+
+	@Transactional(readOnly = true)
+	public long countByExample(${modelName}Example q) {
+		return ${varModelName}Dao.countByExample(q);
+	}
+
+#if ($primaryKey!=''&&$primaryType!='Object')
+    @Transactional
+    public int deleteByPrimaryKey(${primaryType} id) {
+        return ${varModelName}Dao.deleteByPrimaryKey(id);
+    }
+#end
+
+
+
+	@Transactional
+	public int deleteByExample(${modelName}Example q) {
+		return ${varModelName}Dao.deleteByExample(q);
+	}
+
+}

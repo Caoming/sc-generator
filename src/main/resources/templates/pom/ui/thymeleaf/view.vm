@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <title></title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="/webjars/adminlte/2.3.6/bootstrap/css/bootstrap.css"/>
+    <!--font-awesome-->
+    <link rel="stylesheet" href="/webjars/font-awesome/4.6.3/css/font-awesome.css"/>
+    <!--AdminLTE-->
+    <link rel="stylesheet" href="/webjars/adminlte/2.3.6/dist/css/AdminLTE.css"/>
+</head>
+
+<!-- Content Wrapper. Contains page content -->
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            ${modelName}
+            <small>${modelName} List</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> ${modelName}</a></li>
+            <li><a href="#">${modelName} List</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <form>
+                                <div class="input-group input-group-sm" style="width: 35%;">
+                                    <input type="text" name="search" class="form-control pull-right"
+                                           ng-model="param" required="required"/>
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default ajax">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered  table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    #foreach($item in $filedNames)
+                                    <th>${item}</th>
+                                    #end
+                                    <th>Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${page.result}">
+                                    #foreach($field in $varFiledNames)
+                                        #set($prefix="${")
+                                        #set($prefix2="item")
+                                        #set($prefix3="}")
+                                        <td th:text="$prefix$prefix2.$field$prefix3"></td>
+                                    #end
+                                    <td>
+                                        <a href="javascript:void(0)">
+                                            <button class="btn btn-danger btn-sm  btn-flat" th:onclick="'del(\''+$prefix$prefix2.${primaryKey}$prefix3+'\')'" type="button">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm  btn-flat" th:onclick="'edit(\''+$prefix$prefix2.${primaryKey}$prefix3+'\')'" type="button">
+                                                <i class="fa  fa-edit"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        #set($prefix="${")
+                        #set($prefix2="page.pageNum&gt;")
+                        #set($prefix3="}")
+                        #set($prefix4="page.pages&gt;")
+
+                        <div class="box-footer clearfix" th:if="$prefix${prefix2}0$prefix3">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+
+                                <li th:if="$prefix${prefix2}1$prefix3">
+                                    <a href="javascript:void(0)" th:onclick="'changePage(\'/${varModelName}/list?pageNum='+${page.pageNum-1}+'\')'" >«</a>
+                                </li>
+                                <li th:if="$prefix${prefix2}1$prefix3">
+                                    <a  href="javascript:void(0)" onclick="changePage('/${varModelName}/list?pageNum=1')">1</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" th:onclick="'changePage(\'/${varModelName}/list?pageNum='+${page.pageNum}+'\')'" th:text="${page.pageNum}"></a>
+                                </li>
+                                <li th:if="$prefix${prefix4}page.pageNum  $prefix3" >
+                                    <a href="javascript:void(0)" th:onclick="'changePage(\'/${varModelName}/list?pageNum='+${page.pages}+'\')'" th:text="${page.pages}"></a>
+                                </li>
+                                <li th:if="$prefix${prefix4}page.pageNum  $prefix3">
+
+                                    <a href="javascript:void(0)"  th:onclick="'changePage(\'/${varModelName}/list?pageNum='+$prefix page.pageNum+1}+'\')'" >»</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+
+    <div class='modal' id='${varModelName}Pop'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal'>
+                        <span aria-hidden='true'>×</span><span class='sr-only'>Close</span>
+                    </button>
+                    <h4 class='modal-title'>${modelName}</h4>
+                </div>
+                <div class='modal-body'>
+                    <form  method="post">
+                        #foreach($item in $filedNames)
+                            #set($index = $velocityCount - 1 )
+                            #if($!{varFiledNames.get($index)}==$primaryKey)
+                                <input type="hidden" class='form-control' name="$!{varFiledNames.get($index)}"
+                                       id="$!{varFiledNames.get($index)}"
+                                       ng-model="data.$!{varFiledNames.get($index)}"/>
+                            #else
+                            <div class='form-group'>
+                                <label>$item:</label>
+                                <input type="text" class='form-control' name="$!{varFiledNames.get($index)}"
+                                       id="$!{varFiledNames.get($index)}" />
+                            </div>
+                            #end
+                        #end
+
+                        <div class='modal-footer'>
+                            <button type='button' class='btn btn-default' data-dismiss='modal'>Close
+                            </button>
+                            <button type="submit" class='btn btn-primary'>Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--bootstrap-->
+<script src="/webjars/adminlte/2.3.6/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="/webjars/adminlte/2.3.6/bootstrap/js/bootstrap.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/${tableName}.js"></script>
+
+</html>

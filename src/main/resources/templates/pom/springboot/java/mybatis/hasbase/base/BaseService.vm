@@ -1,0 +1,39 @@
+package ${commonPath};
+
+import java.util.List;
+
+
+public interface BaseService<T, Q, P> {
+
+
+	T selectByPrimaryKey(P id);
+	
+	List<T> selectByPrimaryKeys(List<P> ids);
+
+    List<T> selectByExample(Q example);
+
+    Object insert(T t);
+
+	Object insertSelective(T t);
+
+	Object insertBatch(List<T> models);
+
+    Object updateByPrimaryKey(T t);
+
+	Object updateByPrimaryKeySelective(T t);
+
+	Object updateByExample(T t, Q q);
+
+	Object updateByExampleSelective(T t, Q q);
+
+    void updateBatch(List<T> ts);
+
+	int countByExample(Q example);
+
+    int deleteByPrimaryKey(P id);
+
+	int deleteByPrimaryKeys(List<P> ids);
+
+	int deleteByExample(Q q);
+
+}

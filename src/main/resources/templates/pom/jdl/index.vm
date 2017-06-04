@@ -1,0 +1,10 @@
+#foreach($item  in $modelMap.entrySet())
+entity ${item.key} {
+
+#foreach($filed in $item.value.entrySet())
+    ${filed.key} ${filed.value}
+
+#end
+}
+
+#end
