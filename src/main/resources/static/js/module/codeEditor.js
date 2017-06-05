@@ -16,3 +16,15 @@ var executeSqlPop = function () {
     //     });
     // }
 };
+
+var checkLanguage = function () {
+    if($("#projectLanguage").val()!=='java'){
+        $("#databaseOperationLayer ").find("option").eq(1).removeAttr("selected");
+        $("#databaseOperationLayer ").find("option").eq(0).attr("selected","selected");
+        $("#databaseOperationLayer").val("jpa");
+    }else{
+        $("#databaseOperationLayer ").find("option").eq(0).removeAttr("selected");
+        $("#databaseOperationLayer ").find("option").eq(1).attr("selected","selected");
+        $("#databaseOperationLayer").val("mybatis");
+    }
+};

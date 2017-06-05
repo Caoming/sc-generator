@@ -144,7 +144,7 @@
 
                     <div class="form-group">
                         <label>Language:</label>
-                        <select class="form-control" style="width: 100%;" name="language">
+                        <select class="form-control" style="width: 100%;" name="language" onchange="checkLanguage()" id="projectLanguage">
                             <option value="java" selected>Java</option>
                             <option value="kotlin">Kotlin</option>
                             <option value="groovy">Groovy</option>
@@ -173,7 +173,7 @@
 
                     <div class="form-group">
                         <label>Database Operation Layer:</label>
-                        <select class="form-control" style="width: 100%;" name="type">
+                        <select class="form-control" style="width: 100%;" name="type" id="databaseOperationLayer">
                             <option value="jpa">Jpa</option>
                             <option value="mybatis" selected>Mybatis</option>
                         </select>
