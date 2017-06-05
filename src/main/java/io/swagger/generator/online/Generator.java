@@ -248,14 +248,16 @@ public class Generator {
         }
 
         Map<String, Model> definitions = swagger.getDefinitions();
-        List<String> removeModelKeys = new ArrayList<>();
-        for (String key : definitions.keySet()) {
-            if (ignoreModel.contains(key)) {
-                removeModelKeys.add(key);
+        if(definitions!=null){
+            List<String> removeModelKeys = new ArrayList<>();
+            for (String key : definitions.keySet()) {
+                if (ignoreModel.contains(key)) {
+                    removeModelKeys.add(key);
+                }
             }
-        }
-        for (String removeModelKey : removeModelKeys) {
-            definitions.remove(removeModelKey);
+            for (String removeModelKey : removeModelKeys) {
+                definitions.remove(removeModelKey);
+            }
         }
         swagger.setPaths(paths);
         return swagger;
