@@ -16,3 +16,5 @@ cd sc-generator
 mvn package -Dmaven.test.skip=true
 java -server -Xms1024M -Xmx1024M  -XX:PermSize=256M  -jar ./target/sc-generator.jar
 ```
+
+[demo](https://github.com/wu191287278/picture)
