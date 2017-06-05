@@ -25,7 +25,7 @@ public abstract class BaseRestImpl<T, Q, P> extends BaseServiceImpl<T, Q, P> imp
 	}
 
 	@Transactional
-	public int deleteByPrimaryKey(@PathVariable("id") P id) {
+	public Integer deleteByPrimaryKey(@PathVariable("id") P id) {
 		return super.deleteByPrimaryKey(id);
 	}
 

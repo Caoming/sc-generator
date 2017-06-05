@@ -34,13 +34,13 @@ public interface ${modelName}Service {
 
 	Object updateByExampleSelective(${modelName} t, ${modelName}Example q);
 
-	long countByExample(${modelName}Example q);
+	Long countByExample(${modelName}Example q);
 #if ($primaryKey!=''&&$primaryType!='Object')
 
 
-    int deleteByPrimaryKey(${primaryType} id);
+    Integer deleteByPrimaryKey(${primaryType} id);
 #end
 
-	int deleteByExample(${modelName}Example q);
+	Integer deleteByExample(${modelName}Example q);
 
 }

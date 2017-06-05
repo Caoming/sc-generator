@@ -28,12 +28,12 @@ public interface BaseService<T, Q, P> {
 
     void updateBatch(List<T> ts);
 
-	int countByExample(Q example);
+	Long countByExample(Q example);
 
-    int deleteByPrimaryKey(P id);
+    Integer deleteByPrimaryKey(P id);
 
-	int deleteByPrimaryKeys(List<P> ids);
+	Integer deleteByPrimaryKeys(List<P> ids);
 
-	int deleteByExample(Q q);
+	Long deleteByExample(Q q);
 
 }

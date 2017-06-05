@@ -100,7 +100,7 @@ public abstract class BaseServiceImpl<T, Q, P> implements BaseService<T, Q, P> {
 	}
 
 	@Transactional(readOnly = true)
-	public int countByExample(Q example) {
+	public Long countByExample(Q example) {
 		setDao();
 		return baseDao.countByExample(example);
 
@@ -113,19 +113,19 @@ public abstract class BaseServiceImpl<T, Q, P> implements BaseService<T, Q, P> {
     }
 
 	@Transactional
-	public int deleteByPrimaryKey(P id) {
+	public Integer deleteByPrimaryKey(P id) {
 		setDao();
 		return baseDao.deleteByPrimaryKey(id);
 	}
 
 	@Transactional
-	public int deleteByPrimaryKeys(List<P> ids) {
+	public Integer deleteByPrimaryKeys(List<P> ids) {
 		setDao();
 		return baseDao.deleteByPrimaryKeys(ids);
 	}
 
 	@Transactional
-	public int deleteByExample(Q q) {
+	public Integer deleteByExample(Q q) {
 		setDao();
 		return baseDao.deleteByExample(q);
 	}

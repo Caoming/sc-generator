@@ -69,13 +69,13 @@ public class ${modelName}ServiceImpl implements ${modelName}Service {
 #end
 
 	@Transactional(readOnly = true)
-	public long countByExample(${modelName}Example q) {
+	public Long countByExample(${modelName}Example q) {
 		return ${varModelName}Dao.countByExample(q);
 	}
 
 #if ($primaryKey!=''&&$primaryType!='Object')
     @Transactional
-    public int deleteByPrimaryKey(${primaryType} id) {
+    public Integer deleteByPrimaryKey(${primaryType} id) {
         return ${varModelName}Dao.deleteByPrimaryKey(id);
     }
 #end

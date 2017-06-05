@@ -18,10 +18,10 @@ public interface BaseRest<T, Q, P> {
     List<T> selectByPrimaryKeys(@PathVariable("ids") List<P> ids);
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    int deleteByPrimaryKey(@PathVariable("id") P id);
+    Integer deleteByPrimaryKey(@PathVariable("id") P id);
 
     @RequestMapping(value = "/ids/{ids}", method = RequestMethod.DELETE)
-    int deleteByPrimaryKeys(@PathVariable("ids") List<P> ids);
+    Integer deleteByPrimaryKeys(@PathVariable("ids") List<P> ids);
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Object insert(@RequestBody T t);

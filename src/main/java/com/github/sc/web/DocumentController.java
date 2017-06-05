@@ -100,7 +100,8 @@ public class DocumentController {
             }
         } else {
             try (InputStream inputStream = generatorDoc(swagger, extension, document.getTitle(), language); StringWriter writer = new StringWriter()) {
-                IOUtils.copy(inputStream, writer);
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+                IOUtils.copy(inputStreamReader, writer);
                 if (language.equalsIgnoreCase("ZH")) {
                     return writer.toString().replaceAll("消耗</h5>", "请求类型</h5>")
                             .replaceAll("生成</h5>", "响应类型</h5>")
@@ -109,6 +110,7 @@ public class DocumentController {
                             .replaceAll("===== 消耗", "===== 请求类型")
                             .replaceAll("===== 生成", "===== 响应类型");
                 }
+                inputStreamReader.close();
                 return writer.toString();
             }
         }
