@@ -16,16 +16,3 @@ cd sc-generator
 mvn package -Dmaven.test.skip=true
 java -server -Xms1024M -Xmx1024M  -XX:PermSize=256M  -jar ./target/sc-generator.jar
 ```
-
-download
-
-```
-wget
-```
-
-run
-```
-java -server -Xms1024M -Xmx1024M  -XX:PermSize=256M  -jar sc-generator.jar
-```
-
-[demo](http://sc.wuyu.pub:8090/)
